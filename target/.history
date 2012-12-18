@@ -1,0 +1,14 @@
+compile
+exit
+compile
+clean
+run
+exit
+clean
+run
+clean
+exit
+run 1
+run Runner2
+clean
+exit
