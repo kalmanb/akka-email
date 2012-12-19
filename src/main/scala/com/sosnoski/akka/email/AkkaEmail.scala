@@ -49,17 +49,18 @@ class EmailFlow(rCount: Int, bCount: Int, sCount: Int, uCount: Int) extends Acto
   println("EmailFlow self.path " + self.path)
   // relative paths appear to sometimes work and sometimes not when run directly in sbt, but generally fail in Eclipse
   //  note that each actor (except this one) has a router as the direct parent and this actor as the grandparent
-  val rProps = Props(new RetrieveData("../../builderRouter")).withRouter(RoundRobinRouter(rCount))
-  val retrieveRouter = context.actorOf(rProps, name = "retrieveRouter")
-  
-  val bProps = Props(new EmailBuilder("../../senderRouter")).withRouter(RoundRobinRouter(bCount))
-  val buildRouter = context.actorOf(bProps, name = "builderRouter")
-  
-  val sProps = Props(new SmtpSender("../../updaterRouter")).withRouter(RoundRobinRouter(sCount))
-  val senderRouter = context.actorOf(sProps, name = "senderRouter")
-  
   val uProps =  Props(new DatabaseUpdater("../..")).withRouter(RoundRobinRouter(uCount))
   val updateRouter = context.actorOf(uProps, name = "updaterRouter")
+
+  val sProps = Props(new SmtpSender("../../updaterRouter")).withRouter(RoundRobinRouter(sCount))
+  val senderRouter = context.actorOf(sProps, name = "senderRouter")
+
+  val bProps = Props(new EmailBuilder("../../senderRouter")).withRouter(RoundRobinRouter(bCount))
+  val buildRouter = context.actorOf(bProps, name = "builderRouter")
+
+  val rProps = Props(new RetrieveData("../../builderRouter")).withRouter(RoundRobinRouter(rCount))
+  val retrieveRouter = context.actorOf(rProps, name = "retrieveRouter")
+
   // absolute paths appear to work more consistently
 
 /*  val rProps = Props(new RetrieveData(self.path + "/builderRouter")).withRouter(RoundRobinRouter(rCount))
@@ -99,7 +100,7 @@ class EmailFlow(rCount: Int, bCount: Int, sCount: Int, uCount: Int) extends Acto
 
 // simulate retrieving data from a database or directory
 class RetrieveData(routerName: String) extends Actor {
-  lazy val target = context.actorFor(routerName)
+  val target = context.actorFor(routerName)
   def receive = LoggingReceive {
     case Retrieve(count) =>
       for (i <- 1 to count) {
@@ -107,17 +108,17 @@ class RetrieveData(routerName: String) extends Actor {
         val email = "joe@joe.com"
         println("Retriever " + self.path.name +" retrieving data for " + name + " and passing to " + target.path)
         target ! new Build(name, email)
-        Thread.sleep(200)
+        Thread.sleep(20)
       }
   }
 }
 
 // simulate building the email to be sent to a particular address
 class EmailBuilder(routerName: String) extends Actor {
-  lazy val target = context.actorFor(routerName)
+  val target = context.actorFor(routerName)
   def receive = LoggingReceive {
     case Build(name, email) =>
-      Thread.sleep(1000)
+      Thread.sleep(100)
       println("Builder " + self.path.name +" building email for " + name + " and passing to " + target.path)
       target ! new Send(name, "Hello, sailor", email)
   }
@@ -125,10 +126,10 @@ class EmailBuilder(routerName: String) extends Actor {
 
 // simulate sending the email
 class SmtpSender(routerName: String) extends Actor {
-  lazy val target = context.actorFor(routerName)
+  val target = context.actorFor(routerName)
   def receive = LoggingReceive {
     case Send(name, text, email) => {
-      Thread.sleep(1000)
+      Thread.sleep(100)
       println("Sender " + self.path.name +" sending email for " + name + " and passing to " + target.path)
       target ! new Update(name)
     }
@@ -137,11 +138,11 @@ class SmtpSender(routerName: String) extends Actor {
 
 // simulate updating the database to say the email has been sent
 class DatabaseUpdater(routerName: String) extends Actor {
-  lazy val target = context.actorFor(routerName)
+  val target = context.actorFor(routerName)
   def receive = LoggingReceive {
     case Update(name) => {
       println("Updater " + self.path.name +" updating information for " + name + " and passing to " + target.path)
-      Thread.sleep(1000)
+      Thread.sleep(100)
       target ! Complete
     }
   }
