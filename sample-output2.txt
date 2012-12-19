@@ -1,0 +1,28 @@
+Enter number: 1
+
+[info] Running com.sosnoski.akka.email.Runner1 
+EmailFlow self.path akka://EmailSystem/user/EmailFlow1
+Created builder with target akka://EmailSystem/user/EmailFlow1/senderRouter
+Created retriever with target akka://EmailSystem/user/EmailFlow1/builderRouter
+Starting simulation of 6 messages
+Created sender with target akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+Created updater with target akka://EmailSystem/user/EmailFlow1
+Retriever $a retrieving data for Joe$a1 and passing to akka://EmailSystem/user/EmailFlow1/builderRouter
+Retriever $a retrieving data for Joe$a2 and passing to akka://EmailSystem/user/EmailFlow1/builderRouter
+Retriever $a retrieving data for Joe$a3 and passing to akka://EmailSystem/user/EmailFlow1/builderRouter
+Retriever $a retrieving data for Joe$a4 and passing to akka://EmailSystem/user/EmailFlow1/builderRouter
+Retriever $a retrieving data for Joe$a5 and passing to akka://EmailSystem/user/EmailFlow1/builderRouter
+Builder $a building email for Joe$a1 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter
+Retriever $a retrieving data for Joe$a6 and passing to akka://EmailSystem/user/EmailFlow1/builderRouter
+Builder $a building email for Joe$a2 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter
+Sender $a sending email for Joe$a1 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+Builder $a building email for Joe$a3 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter
+Sender $a sending email for Joe$a2 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+Builder $a building email for Joe$a4 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter
+Sender $a sending email for Joe$a3 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+Builder $a building email for Joe$a5 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter
+Sender $a sending email for Joe$a4 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+Builder $a building email for Joe$a6 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter
+Sender $a sending email for Joe$a5 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+Sender $a sending email for Joe$a6 and passing to akka://EmailSystem/user/EmailFlow1/senderRouter/$a/../../updaterRouter
+
